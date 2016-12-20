@@ -1,0 +1,74 @@
+// input输入自动提示
+	var countries = new Bloodhound({
+		datumTokenizer: function(d) { return d.tokens; },
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+            url: '/boxmanager/control/throwLeasePlan?q=%QUERY', // 后台必须将数据写到页面（即访问此链接页面上直接可以看到结果），不能写到文件中（如访问连接直接出现一个保存文件的对话框）
+						wildcard: '%QUERY' // 定义查询值模板(后台可以通过参数q获取到相应的输入)
+				},
+	});
+	$('#typeahead_example_2').typeahead(null, {
+        display: 'name', // 展示json数据中的字段名
+        limit: 10, // 最好设置一下
+        source: countries // 数据源为Bloodhound的ajax获取的
+    });
+
+
+// 选择框的宽度是和包裹input的div一般宽
+
+=======================================
+$('#regionNum').typeahead({
+		minLength: 0, //最小输入长度（当输入框输入几个字符后再去访问数据）。 默认是1，如果想输入框获取焦点就提示，此处必须设置成0，
+		highlight: true // 是否高亮搜索的字符
+	},{
+        source: function(q, sync, async) {regionNumBh.search(q, sync, async);}, // 当输入框获取到焦点就会从后台获取数据
+        display: 'regionNum',
+        limit: 10,
+    });
+
+======================================
+// 触发提示时，初始化数据源（利用initialize: false，和initialize()初始化无法达到控制初始化效果）
+		function setNumBhInit() {
+				var setNumBh = new Bloodhound({
+		    		datumTokenizer: Bloodhound.tokenizers.whitespace,
+		            queryTokenizer: Bloodhound.tokenizers.whitespace,
+		            remote: {
+		                url: "/worksite/control/getYardLocationJson?yardStackAreaId="+ ${(ajaxParams.yardStackAreaId)!} + "&regionNum=" + $('#regionNum').val() + "&setNum=%QUERY",
+		                wildcard: '%QUERY'
+		            },
+		    	});
+				return setNumBh;
+			}
+
+			$('#setNum').typeahead({
+				minLength: 0,
+				highlight: true
+			}, {
+		        source: function(q, sync, async) {
+		        	setNumBhInit().search(q, sync, async);
+		        },
+		        display: 'setNum',
+		        limit: 10,
+		    });
+======================================
+定义类
+var Cat = {
+	a: function(a) {
+		//
+	},
+	b: function() {
+		//
+	},
+}
+调用 Cat.a(a);
+
+定义类
+function Cat() {}
+Cat.prototype.a = function(a) {
+	//
+}
+Cat.prototype.b = function() {
+	//
+}
+调用 new Cat().b();
+http://www.ruanyifeng.com/blog/2012/07/three_ways_to_define_a_javascript_class.html

@@ -1,0 +1,25 @@
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>pace插件 - Loading效果</title>
+
+  <link rel="stylesheet" href="lib/pace-theme-center-circle.css" /><!-- 样式文件 -->
+
+  <script src="lib/pace.js"></script><!-- 核心库文件 -->
+
+<body>
+
+    <!--演示代码-->
+    <p><a href="">刷新（无遮罩：我是可以点击的哦）</a></p>
+
+    <input id="range" type="range" min="0" max="100">
+    <script>
+    range.addEventListener('input', function(){
+      document.querySelector('.pace').classList.remove('pace-inactive');
+      document.querySelector('.pace').classList.add('pace-active');
+
+      document.querySelector('.pace-progress').setAttribute('data-progress-text', range.value + '%');
+      document.querySelector('.pace-progress').setAttribute('style', '-webkit-transform: translate3d(' + range.value + '%, 0px, 0px)');
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<head>
+	<meta charset="utf-8" />
+	<title>Sonic 插件在项目中的使用</title>
+
+	<style>
+		body {
+			background-color: #ffffff;
+			background-image: url('loading.gif');
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+			background-position: center;
+		}
+
+		div.page-container {
+			display: none;
+		}
+
+		#loadersDiv {
+			display: none;
+			position: fixed;
+			background-color: #fff;
+			z-index: 1999;
+		}
+
+		canvas {
+			display: block;
+		}
+
+		.sonic {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			-webkit-transform: translate(-50%, -50%);
+		}
+
+	</style>
+</head>
+
+<body>
+
+	<!-- 用来放 Sonic 对象的 div -->
+	<div id="loadersDiv"></div>
+
+	<!-- 整个页面要展示的内容 -->
+	<div class="page-container">
+		<a href="#">链接（我有一层遮罩，加载时不能点我哈）</a>
+	</div>
+
+	<!-- 插件本身不需要 jquery 也可运行 -->
+	<script src="lib/jquery-1.11.3.js"></script>
+	<script src="lib/sonic.js"></script>
+	<script>
+		var loaders = new Sonic({
+			width: 100,
+			height: 100,
+			stepsPerFrame: 1,
+			trailLength: 1,
+			pointDistance: 0.05,
+			backgroundColor: '#fff',
+			strokeColor: '#ccc',
+			fps: 15,
+
+			setup: function() {
+				this._.lineWidth = 4;
+			},
+			step: function(point, index) {
+				var cx = this.padding + 50,
+					cy = this.padding + 50,
+					_ = this._,
+					angle = (Math.PI / 180) * (point.progress * 360);
+				_.beginPath();
+				_.moveTo(point.x, point.y);
+				_.lineTo(
+					(Math.cos(angle) * 25) + cx,
+					(Math.sin(angle) * 25) + cy
+				);
+				_.closePath();
+				_.stroke();
+			},
+			path: [
+				['arc', 50, 50, 40, 0, 360]
+			]
+		});
+
+		// 设置 Sonic 对象 div 的位置，和设置 body 背景图片的位置
+		var width = window.screen.availWidth; // 获取浏览器可视页面的宽度
+		var height = window.screen.availHeight;
+		$("#loadersDiv").css("top", height / 2 - 50);
+		$("#loadersDiv").css("left", width / 2 - 50);
+		var position = '\"' + (width / 2 - 100) + 'px ' + (height / 2 - 100) + 'px\"';
+		$("body").css("background-position", function(index, value) {
+			return (width / 2 - 100) + 'px ' + (height / 2 - 100) + 'px';
+		});
+
+		// 展现 loading
+		$("#loadersDiv").append(loaders.canvas);
+		loaders.play();
+		$("#loadersDiv").css("display", "block");
+
+		// 页面加载完毕后，去除 loading，展示页面主要内容 (利用淡入淡出给用户更好的体验)
+		window.onload = function() {
+			$("#loadersDiv").fadeOut(800);
+			$("div.page-container").fadeIn(300);
+			$("body").css("background-image", "none");
+		}
+
+	</script>
+
+</body>

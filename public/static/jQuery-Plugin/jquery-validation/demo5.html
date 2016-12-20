@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery Validate - 使用心得 </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <form id="formId" method="get" action="">
+        <fieldset>
+            <legend>表单验证</legend>
+            <p>
+                <label class="title">Name</label>
+                <input id="name" name="name" value="smalle"/>
+            </p>
+            <p>
+                <input class="submit" type="submit" value="提交" />
+            </p>
+        </fieldset>
+    </form>
+
+
+    <script type="text/javascript" src="lib/jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="lib/jquery.validate.sm.js"></script>
+    <script type="text/javascript" src="lib/messages_zh.js"></script>
+    <script>
+        $.validator.addMethod("checkName", function(value, element, params) {
+            var flag = false;
+            if(params == value) {
+                flag = true;
+            } else {
+                $.ajax({
+                    url: 'demo5.php?action=add',
+                    type: 'get',
+                    data: {"name": value},
+                    async: false, // 关闭异步比较重要, 否则 flag 返回一直是 false
+                    success: function(data) {
+                        if(data == 'true') { // 存在此用户名
+                            flag = false;
+                        } else if(data == 'false') { // 不存在此用户名
+                            flag = true;
+                        } else {
+                            console.log("后台出错");
+                        }
+                    },
+                    error: function() {
+                        console.log("ajax出错");
+                    }
+                });
+            }
+            return flag;
+        }, "此用户名已经存在");
+
+        $("#formId").validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 2,
+                    checkName: $("input[name='name']").val(),
+                },
+            },
+        });
+
+    </script>
+</body>
+</html>

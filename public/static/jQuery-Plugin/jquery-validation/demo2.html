@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery Validate - 验证规则写js代码中 </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <form id="formId" method="get" action="">
+        <fieldset>
+            <legend>表单验证</legend>
+            <p>
+                <label class="title">Name</label>
+                <input id="name" name="name" />
+                <!-- <input id="name" name="name" name="smalle"/> --><!-- Demo5对比 (修改时，验证不友好) -->
+            </p>
+            <p>
+                <label class="title">text</label>
+                <textarea name="text" cols="22"></textarea>
+            </p>
+            <p>
+                <input class="submit" type="submit" value="提交" />
+            </p>
+        </fieldset>
+    </form>
+
+
+    <script type="text/javascript" src="lib/jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="lib/jquery.validate.sm.js"></script>
+    <script type="text/javascript" src="lib/messages_zh.js"></script>
+    <script>
+        $("#formId").validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 2,
+                    remote: { // ajax验证(后台只能返回 true/false )
+                        url: 'demo2.php?action=add',
+                        type: 'get',
+                        data: { // 传入参数
+                            name: function() {
+                                return $('#name').val();
+                            }
+                        },
+                        beforeSend: function() {
+                            console.log(1);
+                        },
+                        complete: function() {
+                            console.log(2);
+                        }
+                    }
+                },
+                text: "required" //required的另一种写法
+            },
+            // 可修改默认的提示信息
+            messages: {
+                name: {
+                    required: "需要输入名称",
+                    remote: "用户名已存在"
+                },
+                text: "需要输入文本内容"
+            },
+            success: 'valid',
+            success: function(span) {
+                span.addClass("valid").text("Ok!");
+            }
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery Validate - 自定义函数 </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> </head>
+<body>
+    <form id="formId" method="get" action="">
+        <fieldset>
+            <legend>表单验证</legend>
+            <p>
+                <label>Site</label>
+                <input name="site"/> </p>
+            <p>
+                <label>a+b</label>
+                <input name="a" required="true" digits="true"/> + <input name="b" required digits="true"/> </p>
+            <p>
+            <p>
+                <label>Value(a+b)</label>
+                <input name="value"/> </p>
+            <p>
+                <input class="submit" type="submit" value="提交" /> </p>
+        </fieldset>
+    </form>
+
+    <script type="text/javascript" src="lib/jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="lib/jquery.validate.sm.js"></script>
+    <script type="text/javascript" src="lib/messages_zh.js"></script>
+    <script>
+        // value: 当前元素的值 element: 当前元素
+        $.validator.addMethod("domain", function(value, element) {
+          return this.optional(element) || /^http:\/\/www.aezo.cn\//.test(value);
+        }, "链接请以本网站地址http://www.aezo.cn/开头");
+
+        // params传递的额外参数
+        $.validator.addMethod("value", function(value, element, params) {
+          var flag = false;
+          if($.validator.methods.digits.call(this, value, element)) {
+              var a = parseInt($(params[0]).val());
+              var b = parseInt($(params[1]).val());
+              if(value == a + b) {
+                flag = true;
+              }
+          }
+          return flag;
+        }, $.validator.format("请正确输入 {0} + {1} 的值"));
+
+        $("#formId").validate({
+            debug: true,
+            rules: {
+                site: {
+                  required: true,
+                  domain: true,
+                },
+                value: {
+                  required: true,
+                  value: ["input[name='a']", "input[name='b']"],
+                }
+            }
+        });
+    </script>
+</body>
+</html>

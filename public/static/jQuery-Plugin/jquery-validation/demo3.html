@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery Validate - Validator对象相关函数 </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> </head>
+<body>
+    <form id="formId" method="get" action="">
+        <fieldset>
+            <legend>表单验证</legend>
+            <p>
+                <label>Name</label>
+                <input name="username" required minlength="2" maxlength="4" /> </p>
+            <p>
+                <label>E-Mail</label>
+                <input name="email" class="email" required/> </p>
+            <p>
+                <label>年</label>
+                <input name="year" class="mydate"/> </p>
+            <p>
+                <label>月</label>
+                <input name="month" class="mydate"/> </p>
+            <p>
+                <input class="submit" type="submit" value="提交" /> </p>
+        </fieldset>
+    </form>
+    <button type="button" name="button">现在的验证状态</button>
+
+    <script type="text/javascript" src="lib/jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="lib/jquery.validate.sm.js"></script>
+    <script type="text/javascript" src="lib/messages_zh.js"></script>
+    <script>
+        var validator = $("#formId").validate();
+        $(":button").click(function(){
+          //alert(validator.form());
+
+          //alert(validator.element("input[name='username']"));
+
+          //validator.resetForm();
+
+          // validator.showErrors({
+          //   "username": "用户名是必填箱哦"
+          // });
+
+          //alert(validator.numberOfInvalids());
+
+          // var template = jQuery.validator.format("{0} 不是一个有效值");
+          // alert(template("abc"));// abc不是一个有效值
+
+          $.validator.addClassRules({
+            mydate: {
+              required: true,
+            },
+          });
+
+        });
+        //alert(validator.form());
+    </script>
+</body>
+</html>

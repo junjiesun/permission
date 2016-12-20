@@ -1,0 +1,82 @@
+<!doctype html>
+<head>
+	<meta charset="utf-8" />
+	<title>Sonic 插件的基本用法</title>
+
+	<style>
+		body {
+			background: #ccc;
+		}
+
+		a {
+			color: #000;
+		}
+
+		canvas {
+			display: block;
+		}
+
+		.sonic {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			-webkit-transform: translate(-50%, -50%);
+		}
+
+	</style>
+</head>
+<body>
+
+	<a href="#">没有遮罩，你可以点我哦</a>
+
+	<script src="lib/sonic.js"></script>
+	<script>
+		// new 一个 Sonic 对象
+		var loaders = new Sonic({
+			width: 100, // loading图片的宽度
+			height: 100, // loading图片的高度
+			stepsPerFrame: 1,
+			trailLength: 1,
+			pointDistance: 0.05,
+			backgroundColor: '#fff', // 背景色
+			strokeColor: '#ccc', // loading内容色
+			fps: 20, // 帧速
+
+			setup: function() {
+				this._.lineWidth = 4;
+			},
+			step: function(point, index) {
+				var cx = this.padding + 50,
+					cy = this.padding + 50,
+					_ = this._,
+					angle = (Math.PI / 180) * (point.progress * 360);
+				_.beginPath();
+				_.moveTo(point.x, point.y);
+				_.lineTo(
+					(Math.cos(angle) * 25) + cx,
+					(Math.sin(angle) * 25) + cy
+				);
+				_.closePath();
+				_.stroke();
+			},
+			path: [
+				['arc', 50, 50, 40, 0, 360]
+			]
+		});
+
+		// 将 Sonic 对象放在 div 中，并展示
+		var loadersDiv = document.createElement('div');
+		loadersDiv.className = 'loaders';
+		loadersDiv.appendChild(loaders.canvas);
+		document.getElementsByTagName('body')[0].appendChild(loadersDiv);
+		loaders.play();
+
+		// 3秒后去除loading
+		setTimeout(function() {
+			document.getElementsByClassName('loaders')[0].style="display: none;"
+		}, 3000);
+
+	</script>
+
+</body>

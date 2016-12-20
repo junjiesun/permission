@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery Validate - 验证规则写在html标签上 </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> </head>
+<body>
+    <form id="formId" method="get" action="">
+        <fieldset>
+            <legend>表单验证</legend>
+            <p>
+                <label>Name</label>
+                <input name="username" required minlength="2" maxlength="4" /> </p>
+            <p>
+                <label>E-Mail</label>
+                <input name="email" class="email" required/> </p>
+            <p>
+                <input class="submit" type="submit" value="提交" /> </p>
+        </fieldset>
+    </form>
+
+    <!-- jquery库文件 -->
+    <script type="text/javascript" src="lib/jquery-1.11.1.js"></script>
+    <!-- jquery validate核心库文件 -->
+    <script type="text/javascript" src="lib/jquery.validate.sm.js"></script>
+    <!-- jquery validate错误信息中文提示 -->
+    <script type="text/javascript" src="lib/messages_zh.js"></script>
+    <script>
+        $("#formId").validate();
+
+    </script>
+</body>
+</html>
