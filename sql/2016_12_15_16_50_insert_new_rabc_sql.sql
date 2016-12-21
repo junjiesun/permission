@@ -24,12 +24,12 @@ INSERT INTO `menu_permission_rdd` VALUES ('6', '26', unix_timestamp(now()), unix
 -- ----------------------------
 -- Records of menu_rdd
 -- ----------------------------
-INSERT INTO `menu_rdd` VALUES (null, '1', '1', unix_timestamp(now()), unix_timestamp(now()));
-INSERT INTO `menu_rdd` VALUES ('1', '2', '100', unix_timestamp(now()), unix_timestamp(now()));
-INSERT INTO `menu_rdd` VALUES ('1', '3', '101', unix_timestamp(now()), unix_timestamp(now()));
-INSERT INTO `menu_rdd` VALUES ('1', '4', '102', unix_timestamp(now()), unix_timestamp(now()));
-INSERT INTO `menu_rdd` VALUES ('1', '5', '103', unix_timestamp(now()), unix_timestamp(now()));
-INSERT INTO `menu_rdd` VALUES ('1', '6', '104', unix_timestamp(now()), unix_timestamp(now()));
+INSERT INTO `menu_rdd` VALUES (null, '1', '1','', unix_timestamp(now()), unix_timestamp(now()));
+INSERT INTO `menu_rdd` VALUES ('1', '2', '100','', unix_timestamp(now()), unix_timestamp(now()));
+INSERT INTO `menu_rdd` VALUES ('1', '3', '101','', unix_timestamp(now()), unix_timestamp(now()));
+INSERT INTO `menu_rdd` VALUES ('1', '4', '102','', unix_timestamp(now()), unix_timestamp(now()));
+INSERT INTO `menu_rdd` VALUES ('1', '5', '103','', unix_timestamp(now()), unix_timestamp(now()));
+INSERT INTO `menu_rdd` VALUES ('1', '6', '104','', unix_timestamp(now()), unix_timestamp(now()));
 
 -- ----------------------------
 -- Records of permission

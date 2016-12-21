@@ -57,6 +57,7 @@ CREATE TABLE `menu_rdd` (
   `parent_menu_id` int(11) DEFAULT NULL,
   `menu_id` int(11) DEFAULT NULL,
   `sort` int(11) DEFAULT '0' COMMENT '排序',
+  `icon` varchar(255) DEFAULT NULL,
   `create_time` int(11) NOT NULL,
   `modify_time` int(11) NOT NULL,
   KEY `idx_menu_rdd_parent_menu_id` (`parent_menu_id`),
@@ -64,8 +65,6 @@ CREATE TABLE `menu_rdd` (
   CONSTRAINT `fk_menu_rdd_menu_id` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`menu_id`),
   CONSTRAINT `fk_menu_rdd_parent_menu_id` FOREIGN KEY (`parent_menu_id`) REFERENCES `menu` (`menu_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='菜单无限级关联表';
-
-
 
 DROP TABLE IF EXISTS `permission_group`;
 CREATE TABLE `permission_group` (
@@ -81,7 +80,6 @@ CREATE TABLE `permission_group` (
   `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`permission_group_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='权限组';
-
 
 DROP TABLE IF EXISTS `permission_group_user_permission_rdd`;
 CREATE TABLE `permission_group_user_permission_rdd` (
