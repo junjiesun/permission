@@ -88,7 +88,7 @@ class MenuService
 			$menuRdd  = [
 				'parent_menu_id' => intval($parent_id) ===0 ? null : $parent_id,
 				'menu_id'        => $menuId,
-				'sort'           => $sort == 0 ?intval($parentMenu->sort)+1: $sort,
+				'sort'           => $sort == 0 ?intval($parentMenu)+1: $sort,
 				'icon'           => (!empty($icon)? $icon: null),
 				'create_time'    => $time,
 				'modify_time'    => $time
@@ -127,7 +127,7 @@ class MenuService
 		
 		$parentMenu = $this->getMenuSort($parent_id);
 
-		$sort          = intval($parameters['sort']) === 0 ?intval($parentMenu->sort)+1: $parameters['sort'];
+		$sort          = intval($parameters['sort']) === 0 ?intval($parentMenu)+1: $parameters['sort'];
 		$icon          = $parameters['icon'];
 		$status        = intval($parameters['status']);
 		$time = time();
@@ -213,10 +213,18 @@ class MenuService
 	public function getMenuSort($menuId)
 	{
 		
-		$where = intval($menuId) === 0 ? 'menu_rdd.parent_menu_id is null': 'menu_rdd.parent_menu_id = '.$menuId;
-		$sql = 'select max(sort) as sort from menu as m left join menu_rdd 
+//		$where = intval($menuId) === 0 ? 'menu_rdd.parent_menu_id is null': 'menu_rdd.parent_menu_id = '.$menuId;
+//        $sql = 'select max(sort) as sort from menu as m left join menu_rdd
+//				on m.menu_id = menu_rdd.menu_id where '.$where.' and is_close = false and is_deleted = false';
+//        return DB::selectOne($sql);
+
+        $where = intval($menuId) === 0 ? 'menu_rdd.parent_menu_id is null': 'menu_rdd.parent_menu_id = '.$menuId;
+        $sql = 'select max(sort) as sort from menu as m left join menu_rdd 
 				on m.menu_id = menu_rdd.menu_id where '.$where.' and is_close = false and is_deleted = false';
-		return DB::selectOne($sql);
+        $getMenuSortId = DB::selectOne($sql);
+
+        $sortId = $where != 'menu_rdd.parent_menu_id is null' && $getMenuSortId->sort == 0 ? $this->getMenuById($menuId)->sort :$getMenuSortId->sort;
+        return $sortId;
 	}
 
 	public function getParentMenu()
